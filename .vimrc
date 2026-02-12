@@ -5,69 +5,59 @@
 " External tool to open in Vim server:
 "     gvim.exe --servername vsvim --remote-silent $(ItemPath)
 "
-"   nnoremap yx<bs>  :vsc OtherContextMenus.FSIConsoleContext.ResetInteractiveSession<cr>
-"   nnoremap !m  :vsc OtherContextMenus.FSIConsoleContext.ResetInteractiveSession<bar>vsc Build.BuildSelection<cr>
 
 set clipboard=unnamed
 set ignorecase
 set smartcase
 set incsearch
-" set tabstop=4
-" set shiftwidth=4
 set backspace=eol,start,indent
-" set nostartofline
 set hlsearch
-" set autoindent
 set expandtab
 set ttimeout
 set ttimeoutlen=50
 
-nnoremap <S-h> ^
-nnoremap <S-l> $
+nnoremap gh ^
 
 inoremap z,  <c-o>
 inoremap z,p <c-r>" 
-" save -->
-nnoremap z. :w<cr>
+" save and format
+nnoremap z. :vsc Edit.FormatDocument<cr>:w<cr>
 
-"horrible hack because VsVim refuses to fix this bug
-nnoremap g; u<c-r>
 " exit insert mode -->
 inoremap jk <Esc> 
 inoremap JK <Esc>
+
+" go back
+nnoremap gb :vsc View.NavigateBackward<cr>
+nnoremap gf :vsc View.NavigateForward<cr>
+
+nnoremap <space> :vsc Edit.GoToFile<cr>
+
+nnoremap rn :vsc Refactor.Rename<cr>
+
 " build "
 nnoremap sb :vsc Build.BuildSolution<cr>
 nnoremap sc :vsc Build.BuildCleanSolution<cr>
 nnoremap run :vsc Debug.StartWithoutDebugging<cr>
+nnoremap dbg :vsc Debug.Start<cr>
 
+" delete all and copy all
 nnoremap dae ggVGd:w<cr>
 nnoremap yae ggVGy<cr>
 
 
-nnoremap \ ,
-nnoremap gj i<cr><esc>k$
-nnoremap s /
-nnoremap S ?
-nnoremap zy  zt5<c-y>
-
 nnoremap gwo :vsc FullScreen<cr>
-nnoremap gws :vsc Window.Split<cr>
-nnoremap gwc :vsc Window.Split<cr>
-nnoremap d<tab> :vsc Window.CloseDocumentWindow<cr>
-nnoremap gwC :vsc Window.CloseDocumentWindow<cr>
-nnoremap gwH :vsc Window.MovetoPreviousTabGroup<cr>
-nnoremap gwL :vsc Window.MovetoNextTabGroup<cr>
-nnoremap gwS :vsc Window.NewHorizontalTabGroup<cr>
-nnoremap gwv :vsc Window.NewVerticalTabGroup<cr>
-nnoremap gwT :vsc Window.Float<cr>
-nnoremap gwj :vsc Window.NextSplitPane<cr>
-nnoremap gwk :vsc Window.PreviousSplitPane<cr>
-nnoremap gwn :vsc Window.NextDocumentWindow<cr>
-nnoremap gwp :vsc Window.PreviousDocumentWindow<cr>
+nnoremap gc :vsc Window.CloseDocumentWindow<cr>
+nnoremap gl :vsc Window.NextDocumentWindow<cr>
+nnoremap gh :vsc Window.PreviousDocumentWindow<cr>
+
+nnoremap <S-l> $
+nnoremap <S-h> _
 
 
 nnoremap gso :vsc View.Output<cr>
 nnoremap gse :vsc View.ErrorList<cr>
+nnoremap gwh :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<cr>
 
 
 nnoremap <c-d> <PageDown>
@@ -98,51 +88,23 @@ nnoremap Y y$
 
 nnoremap <c-o> :vsc View.NavigateBackward<cr>
 nnoremap <c-i> :vsc View.NavigateForward<cr>
-xnoremap gc :vsc Edit.CommentSelection<cr>
-nnoremap gcc V:vsc Edit.CommentSelection<cr>
+xnoremap gC :vsc Edit.CommentSelection<cr>
 
-"version control
-nnoremap Ud :vsc Team.Git.CompareWithUnmodified<cr>
-nnoremap Us :vsc Team.Git.GoToGitChanges<cr>
-nnoremap ]c :vsc Diff.NextDifference<cr>
-nnoremap [c :vsc Diff.PreviousDifference<cr>
 
-" gs  =>  expression manipulation
-" cr  =>  refactor
-" g/  =>  navigation (search for files/symbols)
-" gk  =>  inspection
-"   g]  =>  peek current symbol
-"   ]I
-"   ]d
-" debugging
 
 nnoremap gr :vsc Edit.FindAllReferences<cr>
 " go to the type of the current symbol
-" nnoremap gD :vsc ReSharper.ReSharper_GotoTypeDeclaration<cr> -->
-nnoremap gI :vsc Edit.GoToImplementation<cr>
-" go to class member ("outline")
-nnoremap <M-o> :vsc ReSharper.ReSharper_GotoFileMember<cr>
-
-" go to file
-nnoremap <C-p> :vsc ReSharper.ReSharper_GotoFile<cr>
-" go to anything ("tags"/types/symbols/files)
-nnoremap g/t :vsc ReSharper.ReSharper_GotoType<cr>
+nnoremap gi :vsc Edit.GoToImplementation<cr>
+nnoremap gd    :vsc Edit.GoToDefinition<cr>
 " grep everything
 nnoremap g// :vsc Edit.FindinFiles<cr>
 " find/replace in current buffer
 nnoremap g/r :vsc Edit.Replace<cr>
-nnoremap gl  :vsc ReSharper.ReSharper_GotoRecentFiles<cr>
 
-nnoremap <C-t> :vsc ReSharper.ReSharper_TypeHierarchy_Browse<cr>
 nnoremap K     :vsc Edit.QuickInfo<cr>
-nnoremap <C-k> :vsc ReSharper.ReSharper_InspectThis<cr>
 nnoremap gk    :vsc Edit.PeekDefinition<cr>
-nnoremap gd    :vsc Edit.GoToDefinition<cr>
 
 "show refactor menu
-nnoremap crr        :vsc ReSharper.ReSharper_RefactorThis<cr>
-xnoremap <c-r><c-r> :vsc ReSharper.ReSharper_RefactorThis<cr>
-nnoremap crn        :vsc Refactor.Rename<cr>
 nnoremap cri        :vsc EditorContextMenus.CodeWindow.OrganizeUsings.RemoveAndSort<cr>
 "show quickfix menu
 nnoremap <bs> :vsc EditorContextMenus.CodeWindow.QuickActionsForPosition<cr>
@@ -165,8 +127,6 @@ nnoremap [q :vsc Edit.GoToPrevLocation<cr>
 nnoremap ]l  :vsc Edit.NextHighlightedReference<cr>
 nnoremap [l  :vsc Edit.PreviousHighlightedReference<cr>
 
-" 'omnibox'
-nnoremap <space> :vsc Window.QuickLaunch<cr>
 
 nnoremap <insert> :vsc Debug.ToggleBreakpoint<cr>
 nnoremap [o<insert> :vsc Debug.EnableAllBreakpoints<cr>
